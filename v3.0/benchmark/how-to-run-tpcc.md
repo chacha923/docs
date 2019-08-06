@@ -54,12 +54,12 @@ For 1,000 warehouses, the TiDB cluster can be deployed on three machines, with o
 
 For example, the hardware configuration is as follows:
 
-| Type | Name |
-| :--- | :---|
-| OS | Linux (CentOS 7.3.1611) |
-| CPU | 40 vCPUs, Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz |
-| RAM | 128GB |
-| DISK | Optane 500GB SSD |
+| Type | Name                                                |
+| :--- | :-------------------------------------------------- |
+| OS   | Linux (CentOS 7.3.1611)                             |
+| CPU  | 40 vCPUs, Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz |
+| RAM  | 128GB                                               |
+| DISK | Optane 500GB SSD                                    |
 
 1. Because this type of CPU has an NUMA architecture, it is recommended to bind the core using `taskset` and view the NUMA node using `lscpu`. For example:
 
@@ -114,7 +114,7 @@ loadWorkers=32  # The number of concurrent workers that load data.
 1. Use a MySQL client to connect to the TiDB server and run the following command:
 
     ```sql
-    create database tpcc
+    CREATE DATABASE tpcc
     ```
 
 2. Run the following BenchmarkSQL script in shell to create tables:

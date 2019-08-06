@@ -272,7 +272,7 @@ Query OK, 0 rows affected (0.09 sec)
 {{< copyable "sql" >}}
 
 ```sql
-select * from t1 partition(p0);
+SELECT * FROM t1 PARTITION(p0);
 ```
 
 ```
@@ -287,7 +287,7 @@ select * from t1 partition(p0);
 {{< copyable "sql" >}}
 
 ```sql
-select * from t1 partition(p1);
+SELECT * FROM t1 PARTITION(p1);
 ```
 
 ```
@@ -297,7 +297,7 @@ Empty set (0.00 sec)
 {{< copyable "sql" >}}
 
 ```sql
-select * from t1 partition(p2);
+SELECT * FROM t1 PARTITION(p2);
 ```
 
 ```
@@ -309,7 +309,7 @@ Drop the `p0` partition and verify the result:
 {{< copyable "sql" >}}
 
 ```sql
-alter table t1 drop partition p0;
+ALTER TABLE t1 DROP PARTITION p0;
 ```
 
 ```
@@ -319,7 +319,7 @@ Query OK, 0 rows affected (0.08 sec)
 {{< copyable "sql" >}}
 
 ```sql
-select * from t1;
+SELECT * FROM t1;
 ```
 
 ```
@@ -359,7 +359,7 @@ Query OK, 2 rows affected (0.04 sec)
 {{< copyable "sql" >}}
 
 ```sql
-select * from th partition (p0);
+SELECT * FROM th PARTITION (p0);
 ```
 
 ```
@@ -375,7 +375,7 @@ select * from th partition (p0);
 {{< copyable "sql" >}}
 
 ```sql
-select * from th partition (p1);
+SELECT * FROM th PARTITION (p1);
 ```
 
 ```
@@ -852,10 +852,10 @@ For a partitioned table, the result returned by `select * from t` is unordered b
 {{< copyable "sql" >}}
 
 ```sql
-create table t (id int, val int) partition by range (id) (
-    partition p0 values less than (3),
-    partition p1 values less than (7),
-    partition p2 values less than (11));
+CREATE TABLE t (id int, val int) partition BY range (id) (
+    partition p0 VALUES LESS THAN (3),
+    partition p1 VALUES LESS THAN (7),
+    partition p2 VALUES LESS THAN (11));
 ```
 
 ```
@@ -865,7 +865,7 @@ Query OK, 0 rows affected (0.10 sec)
 {{< copyable "sql" >}}
 
 ```sql
-insert into t values (1, 2), (3, 4),(5, 6),(7,8),(9,10);
+INSERT INTO t VALUES (1, 2), (3, 4),(5, 6),(7,8),(9,10);
 ```
 
 ```
@@ -878,7 +878,7 @@ TiDB returns a different result every time, for example:
 {{< copyable "sql" >}}
 
 ```sql
-select * from t;
+SELECT * FROM t;
 ```
 
 ```
@@ -899,7 +899,7 @@ The result returned in MySQL:
 {{< copyable "sql" >}}
 
 ```sql
-select * from t;
+SELECT * FROM t;
 ```
 
 ```
