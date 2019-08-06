@@ -55,7 +55,7 @@ In TiDB, auto-increment columns are only guaranteed to be incremental and unique
 Assume that you have a table with the auto-increment ID:
 
 ```sql
-create table t(id int unique key auto_increment, c int);
+CREATE TABLE t(id int UNIQUE KEY AUTO_INCREMENT, c int);
 ```
 
 The principle of the auto-increment ID in TiDB is that each tidb-server instance caches a section of ID values (currently 30000 IDs are cached) for allocation and fetches the next section after this section is used up.

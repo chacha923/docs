@@ -11,8 +11,8 @@ Transaction isolation is one of the foundations of database transaction processi
 
 The SQL-92 standard defines four levels of transaction isolation: Read Uncommitted, Read Committed, Repeatable Read, and Serializable. See the following table for details:
 
-| Isolation Level  | Dirty Write   | Dirty Read | Fuzzy Read     | Phantom |
-| :----------- | :------------ | :------------- | :----------| :-------- |
+| Isolation Level  | Dirty Write  | Dirty Read   | Fuzzy Read   | Phantom      |
+| :--------------- | :----------- | :----------- | :----------- | :----------- |
 | READ UNCOMMITTED | Not Possible | Possible     | Possible     | Possible     |
 | READ COMMITTED   | Not Possible | Not possible | Possible     | Possible     |
 | REPEATABLE READ  | Not Possible | Not possible | Not possible | Possible     |
@@ -67,29 +67,29 @@ By default TiDB will not retry transactions because this might lead to lost upda
 
 Example 1:
 
-| Session1 | Session2 |
-| ---------------- | ------------ |
-| `begin;` | `begin;` |
-| `select balance from t where id = 1;` | `update t set balance = balance -100 where id = 1;` |
-|  | `update t set balance = balance -100 where id = 2;` |
-| // the subsequent logic depends on the result of `select` | `commit;` |
-| `if balance > 100 {` | |
-| `update t set balance = balance + 100 where id = 2;` | |
-| `}` | |
-| `commit;` // automatic retry | |
+| Session1                                                  | Session2                                            |
+| --------------------------------------------------------- | --------------------------------------------------- |
+| `begin;`                                                  | `begin;`                                            |
+| `select balance from t where id = 1;`                     | `update t set balance = balance -100 where id = 1;` |
+|                                                           | `update t set balance = balance -100 where id = 2;` |
+| // the subsequent logic depends on the result of `select` | `commit;`                                           |
+| `if balance > 100 {`                                      |                                                     |
+| `update t set balance = balance + 100 where id = 2;`      |                                                     |
+| `}`                                                       |                                                     |
+| `commit;` // automatic retry                              |                                                     |
 
 Example 2:
 
-| Session1 | Session2   |
-| ---------------- | ------------ |
-| `begin;` | `begin;` |
-| `update t set balance = balance - 100  where id = 1;` | `delete from t where id = 1;` |
-|  | `commit;` |
-| // the subsequent logic depends on the result of `affected_rows` | |
-| `if affected_rows > 0 {` | |
-| `update t set balance = balance + 100 where id = 2;` | |
-| `}` | |
-| `commit;` // automatic retry | |
+| Session1                                                         | Session2                      |
+| ---------------------------------------------------------------- | ----------------------------- |
+| `begin;`                                                         | `begin;`                      |
+| `update t set balance = balance - 100  where id = 1;`            | `delete from t where id = 1;` |
+|                                                                  | `commit;`                     |
+| // the subsequent logic depends on the result of `affected_rows` |                               |
+| `if affected_rows > 0 {`                                         |                               |
+| `update t set balance = balance + 100 where id = 2;`             |                               |
+| `}`                                                              |                               |
+| `commit;` // automatic retry                                     |                               |
 
 Under the automatic retry mechanism of TiDB, all the executed statements for the first time are re-executed again. Whether the subsequent statements are to be executed or not depends on the results of the previous statements, automatic retry can violate snapshot isolation, causing lost updates.
 
@@ -112,11 +112,11 @@ The `tidb_retry_limit` variable determines the maximum number of transaction ret
 If you execute a statement within a transaction, the statement does not take effect when an error occurs.
 
 ```sql
-begin;
-insert into test values (1);
-insert into tset values (2);  // This statement does not take effect because "test" is misspelled as "tset".
-insert into test values (3);
-commit;
+BEGIN;
+INSERT INTO test VALUES (1);
+INSERT INTO tset VALUES (2);  // This statement does not take effect because "test" is misspelled as "tset".
+INSERT INTO test VALUES (3);
+COMMIT;
 ```
 
 In the above example, the second `insert` statement fails, while the other two `insert` statements (1 & 3) can be successfully committed.
