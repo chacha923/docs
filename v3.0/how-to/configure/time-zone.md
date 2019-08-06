@@ -44,19 +44,19 @@ The current session time zone setting affects the display and storage of time va
 > Only the values of the Timestamp data type is affected by time zone. This is because the Timestamp data type uses the literal value + time zone information. Other data types, such as Datetime/Date/Time, do not have time zone information, thus their values are not affected by the changes of time zone.
 
 ```sql
-mysql> create table t (ts timestamp, dt datetime);
+mysql> CREATE TABLE t (ts timestamp, dt datetime);
 Query OK, 0 rows affected (0.02 sec)
 
-mysql> set @@time_zone = 'UTC';
+mysql> SET @@time_zone = 'UTC';
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> insert into t values ('2017-09-30 11:11:11', '2017-09-30 11:11:11');
+mysql> INSERT INTO t VALUES ('2017-09-30 11:11:11', '2017-09-30 11:11:11');
 Query OK, 1 row affected (0.00 sec)
 
-mysql> set @@time_zone = '+8:00';
+mysql> SET @@time_zone = '+8:00';
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> select * from t;
+mysql> SELECT * FROM t;
 +---------------------|---------------------+
 | ts                  | dt                  |
 +---------------------|---------------------+
